@@ -23,7 +23,7 @@
 module.exports.routes = {
 
   "POST /book/": "BookController.create",
-  "GET /book/:book_id": "BookController.find",
-  "PUT /book/:book_id": "BookController.update"
-
+  "GET /book/:book_id": "BookController.get",
+  "PUT /book/:book_id": "BookController.update",
+  "POST /book/find/": "BookController.find"
 };
