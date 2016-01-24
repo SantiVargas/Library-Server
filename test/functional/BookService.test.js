@@ -6,20 +6,19 @@ var expect = require("expect.js");
 describe("BookSerivce - /book", function() {
 	var urlBase = "http://localhost:1337/book";
 	var bookId;
+	var inputBody = {
+		isbn: "9781433515002",
+		name: "What is the Gospel?"
+	};
 	//ToDo - wipe db for each test
 	describe("Creating the book - POST /", function() {
 		it("should succeed if a new ISBN is provided", function(done) {
-			var inputBody = {
-				isbn: "9781433515002",
-				name: "What is the Gospel?"
-			};
 			request({
 				url: urlBase,
 				method: "POST",
 				json: true,
 				body: inputBody
 			}, function(err, res, body) {
-				console.log(body);
 				expect(err).to.not.be.ok();
 				expect(res.statusCode).to.be(200);
 				expect(body).to.be.ok();
@@ -30,11 +29,25 @@ describe("BookSerivce - /book", function() {
 				expect(body.data.isbn).to.be(inputBody.isbn);
 				expect(body.data.name).to.be(inputBody.name);
 				done();
-			})
+			});
 		});
 
 		//ToDo - preload data for this test
-		it("should fail if a book with the same ISBN already exists");
+		it("should fail if a book with the same ISBN already exists", function(done) {
+			request({
+				url: urlBase,
+				method: "POST",
+				json: true,
+				body: inputBody
+			}, function(err, res, body) {
+				expect(err).to.not.be.ok();
+				expect(res.statusCode).to.be(400);
+				expect(body).to.be.ok();
+				expect(body.success).to.be(false);
+				expect(body.data).to.not.be.ok();
+				done();
+			});
+		});
 	});
 	describe("Updating the book - PUT /:book_id", function() {
 		it("should succeed if the book exists");

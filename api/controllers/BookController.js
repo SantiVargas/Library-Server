@@ -13,7 +13,9 @@ Controller.create = function(req, res) {
 	Book.create(newBook, function(err, book) {
 		if (err) {
 			sails.log.error("BookController.create", "Error creating book", err);
-			return res.json(400, null);
+			return res.json(400, {
+				success: false
+			});
 		}
 		return res.json(200, {
 			success: true,
